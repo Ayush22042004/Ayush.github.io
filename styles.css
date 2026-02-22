@@ -617,8 +617,9 @@ body::after {
     transition: 0.3s;
 }
 
-/* THEME TOGGLE BUTTON - PORTAL EFFECT */
-.theme-toggle {
+/* THEME & MUSIC TOGGLE BUTTON - PORTAL EFFECT */
+.theme-toggle,
+.music-toggle {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -642,7 +643,8 @@ body::after {
     50% { box-shadow: 0 0 25px rgba(211, 47, 47, 0.5), 0 0 40px rgba(211, 47, 47, 0.2); }
 }
 
-.theme-toggle::before {
+.theme-toggle::before,
+.music-toggle::before {
     content: '';
     position: absolute;
     inset: 0;
@@ -652,25 +654,29 @@ body::after {
     transition: all 0.4s ease;
 }
 
-.theme-toggle:hover::before {
+.theme-toggle:hover::before,
+.music-toggle:hover::before {
     opacity: 0.3;
     transform: scale(1);
 }
 
-.theme-toggle:hover {
+.theme-toggle:hover,
+.music-toggle:hover {
     background: var(--primary-color);
     color: white;
     transform: rotate(180deg) scale(1.1);
     box-shadow: 0 0 30px var(--primary-color);
 }
 
-body.real-world .theme-toggle {
+body.real-world .theme-toggle,
+body.real-world .music-toggle {
     border-color: var(--primary-color);
     color: var(--primary-color);
     background: transparent;
 }
 
-body.real-world .theme-toggle:hover {
+body.real-world .theme-toggle:hover,
+body.real-world .music-toggle:hover {
     background: var(--primary-color);
     color: white;
 }
@@ -679,7 +685,6 @@ body.real-world .theme-toggle:hover {
 .music-toggle {
     margin-left: 8px;
 }
-
 /* =====================================================
    HERO SECTION - STRANGER THINGS EPIC
    ===================================================== */
@@ -3011,8 +3016,13 @@ body.real-world ::-webkit-scrollbar-thumb {
     }
 
     /* ===== HIDE UNNECESSARY ELEMENTS FOR MOBILE ===== */
-    .theme-toggle {
+    /* only hide theme switcher, keep music toggle visible */
+    .theme-toggle:not(.music-toggle) {
         display: none !important;
+    }
+    /* ensure music toggle remains visible on mobile */
+    .music-toggle {
+        display: flex !important;
     }
 
     .floating-particles {
