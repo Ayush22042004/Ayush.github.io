@@ -1,3 +1,124 @@
+# AYUSH SINGH — Personal Portfolio
+
+A dark, Stranger Things–inspired portfolio to showcase projects, skills, and contact details. This is a static site built with plain HTML, CSS and vanilla JavaScript.
+
+Live demo: (your deployed URL here)
+
+---
+
+## About
+
+This portfolio demonstrates: a dramatic theme, smooth micro‑interactions, an image slideshow in the About section, a subtle loader animation, and a responsive layout suitable for desktop and mobile.
+
+Key goals:
+- Present projects with clean visual hierarchy
+- Show technical skills and contact information
+- Deliver a memorable theme without heavy frameworks
+
+---
+
+## Features
+
+- Responsive layout (desktop / tablet / mobile)
+- Hero typing animation and CTA buttons
+- About section image slideshow (auto, smooth crossfade)
+- Subtle Stranger Things–style loader and atmospheric background
+- Projects gallery with links to live demos and GitHub
+- Contact form (uses Web3Forms in HTML)
+- Theme toggle (Upside Down / Real World) and background music control
+
+---
+
+## Tech Stack
+
+- HTML5
+- CSS3 (flexbox, CSS variables, animations)
+- JavaScript (ES6)
+- Font Awesome (icons)
+- Google Fonts (typography)
+
+---
+
+## Quick Start (local)
+
+1. Clone the repo or download the ZIP.
+
+```bash
+git clone <your-repo-url>
+cd personal-portfolio
+```
+
+2. Open locally:
+
+```bash
+# Option A: open index.html directly in a browser
+start index.html    # Windows
+
+# Option B: run a simple HTTP server (recommended)
+python -m http.server 8000
+# then visit http://localhost:8000
+```
+
+3. Edit content and assets:
+- Replace images in the `images/` folder (profile, slideshow, project images).
+- Update `index.html` for text/content and project links.
+- Customize colors and theme variables in `styles.css`.
+
+---
+
+## Deployment
+
+- GitHub Pages: push repo, enable Pages (or use the provided GitHub Actions workflow to publish to `gh-pages`).
+- Netlify / Vercel: connect repository for CI/CD or use drag‑and‑drop for a static build.
+
+See the repository's root for an example GitHub Actions workflow (if provided).
+
+---
+
+## Customization Notes
+
+- Images: optimize images (JPEG/WebP) to improve load times.
+- Audio: `audio/bg-music.mp3` is used by default — browsers typically block autoplay with sound; the player starts muted.
+- Contact form: form posts to Web3Forms (see `index.html` for access key). Change to your preferred backend if needed.
+
+---
+
+## Files & Structure
+
+```
+personal-portfolio/
+├─ index.html
+├─ styles.css
+├─ script.js
+├─ images/
+├─ audio/
+└─ README.md
+```
+
+---
+
+## Contributing
+
+This is a personal portfolio template — feel free to fork and adapt. If you want me to help with customizations, tell me which changes you want.
+
+---
+
+## License
+
+This project is provided as-is. Include your preferred license file (e.g., `LICENSE` with MIT) if you want to open-source it.
+
+---
+
+## Contact
+
+Ayush Singh — ayushssingh2005@gmail.com
+
+If you'd like, I can also:
+- Create a GitHub Pages workflow and commit it.
+- Prepare a `CNAME` and instructions for a custom domain.
+
+Enjoy — and congrats on deploying your portfolio! 🎉
+
 # Personal Portfolio Website
 
 A modern, responsive personal portfolio website built with HTML, CSS, and JavaScript.
