@@ -398,6 +398,65 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // ============================================
+    // WEB3FORMS DEBUG (Netlify/Vercel only)
+    // Attach a debug submit handler on deployed previews to log server responses
+    // This won't run on localhost/file://
+    (function attachWeb3FormsDebug() {
+        try {
+            const host = location.hostname || '';
+            if (!(host.includes('netlify') || host.includes('vercel') || host.endsWith('.app') || host.includes('your-custom-domain'))) {
+                return; // only enable on deployed hosts (adjust condition as needed)
+            }
+
+            const form = document.getElementById('contact-form');
+            if (!form) return;
+
+            form.addEventListener('submit', async function (e) {
+                e.preventDefault();
+                const action = form.action || 'https://api.web3forms.com/submit';
+                const data = new FormData(form);
+
+                console.log('Web3Forms debug: submitting to', action);
+
+                try {
+                    const res = await fetch(action, {
+                        method: 'POST',
+                        body: data,
+                    });
+
+                    let body;
+                    const ct = res.headers.get('content-type') || '';
+                    if (ct.includes('application/json')) {
+                        body = await res.json();
+                    } else {
+                        body = await res.text();
+                    }
+
+                    console.log('Web3Forms response status:', res.status, res.statusText);
+                    console.log('Web3Forms response body:', body);
+
+                    // if Web3Forms returns JSON with success flag, follow redirect
+                    if (res.ok) {
+                        const redirect = form.querySelector('input[name="redirect"]')?.value;
+                        if (redirect) {
+                            window.location.href = redirect;
+                            return;
+                        }
+                        alert('Form submitted (check console for server response).');
+                    } else {
+                        alert('Form submission failed — check console network/response for details.');
+                    }
+                } catch (err) {
+                    console.error('Web3Forms debug error:', err);
+                    alert('Error submitting form — see console for details.');
+                }
+            });
+        } catch (e) {
+            console.warn('Could not attach Web3Forms debug handler', e);
+        }
+    })();
+
+    // ============================================
     // INTERSECTION OBSERVER FOR SCROLL ANIMATIONS
     // ============================================
     const observerOptions = {
