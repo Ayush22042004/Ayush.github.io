@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <style>
+            #loader-screen {
+                background: #0d0015;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100vw;
+                height: 100vh;
+                z-index: 99999;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex-direction: column;
+                overflow: hidden;
+            }
+            .loader-fog {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100vw;
+                height: 100vh;
+                pointer-events: none;
+                background: radial-gradient(circle at 60% 40%, rgba(255,255,255,0.08) 0%, rgba(13,0,21,0.2) 100%);
+                opacity: 0.7;
+                filter: blur(8px);
+                animation: fogMove 6s infinite linear alternate;
+            }
+            @keyframes fogMove {
+                0% { transform: translateY(0px) scale(1); opacity: 0.7; }
+                50% { transform: translateY(-20px) scale(1.05); opacity: 0.8; }
+                100% { transform: translateY(0px) scale(1); opacity: 0.7; }
+            }
+            .loader-flicker-text {
+                font-size: 2.2rem;
+                font-weight: 700;
+                color: #d32f2f;
+                letter-spacing: 2px;
+                text-shadow: 0 0 30px #d32f2f, 0 0 60px #d32f2f;
+                animation: loaderFlickerText 3.5s infinite ease-in-out;
+            }
+            @keyframes loaderFlickerText {
+                0%, 100% { opacity: 1; text-shadow: 0 0 30px #d32f2f, 0 0 60px #d32f2f; }
+                20% { opacity: 0.92; text-shadow: 0 0 20px #d32f2f, 0 0 40px #d32f2f; }
+                40% { opacity: 0.85; text-shadow: 0 0 10px #d32f2f, 0 0 20px #d32f2f; }
+                60% { opacity: 0.95; text-shadow: 0 0 40px #d32f2f, 0 0 80px #d32f2f; }
+                80% { opacity: 0.98; text-shadow: 0 0 30px #d32f2f, 0 0 60px #d32f2f; }
+            }
+            .about-slide {
+                transition: opacity 0.7s ease-in-out;
+                opacity: 0;
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
+            .about-slide.active {
+                opacity: 1;
+                z-index: 2;
+            }
+        </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Welcome to the Upside Down. Ayush Singh - Developer of Impossible Things">
+    <meta name="keywords" content="Stranger Things, Developer, Portfolio, Web Developer, Supernatural">
+    <meta name="author" content="Ayush Singh">
+    <title>AYUSH SINGH - THE UPSIDE DOWN DEVELOPER</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+        <!-- Loader Screen -->
+        <div id="loader-screen">
+            <div class="loader-fog"></div>
+            <div class="loader-flicker-text">Entering the Upside Down…</div>
+        </div>
+    <!-- Background music element (start muted to satisfy autoplay policies) -->
+    <audio id="bg-music" src="audio/bg-music.mp3" loop autoplay muted preload="auto"></audio>
+
+    <!-- Stranger Things Animated Background Elements -->
+    <div class="flicker-overlay"></div>
+    <div class="upside-down-bg">
+        <div class="glow-orb orb-1"></div>
+        <div class="glow-orb orb-2"></div>
+        <div class="glow-orb orb-3"></div>
+        <div class="glow-orb orb-4"></div>
+        <div class="lightning"></div>
+        <div class="lightning lightning-2"></div>
+    </div>
+    <div class="floating-particles">
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+    </div>
+    <div class="energy-lines">
+        <div class="energy-line"></div>
+        <div class="energy-line"></div>
+        <div class="energy-line"></div>
+        <div class="energy-line"></div>
+        <div class="energy-line"></div>
+    </div>
+    
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <a href="#home"><span class="logo-icon">A</span><span class="logo-typewriter"></span></a>
+            </div>
+            <ul class="nav-menu" id="nav-menu">
+                <li class="nav-item">
+                    <a href="#home" class="nav-link">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#about" class="nav-link">About</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#skills" class="nav-link">Skills</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#projects" class="nav-link">Projects</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#contact" class="nav-link">Contact</a>
+                </li>
+            </ul>
+            <div class="nav-toggle" id="mobile-menu">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+            <button id="theme-toggle" class="theme-toggle" title="Switch Theme">
+                <span class="theme-icon">🌀</span>
+            </button>
+            <button id="music-toggle" class="theme-toggle music-toggle" title="Toggle Background Music">
+                <i class="fas fa-volume-up"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-container">
+            <div class="hero-content">
+                <h1 class="hero-title">
+                    ENTER THE <span class="highlight">UPSIDE DOWN</span>
+                </h1>
+                <p class="hero-subtitle">
+                    Developer | <span class="typing-text"></span>
+                </p>
+                <p class="hero-description">
+                    Welcome to my supernatural coding realm. I build impossible things with the power of the mind. Full-stack sorcerer crafting digital wonders through code, coffee, and pure determination.
+                </p>
+                <div class="hero-buttons">
+                    <a href="#projects" class="btn btn-primary">EXPLORE MY WORK</a>
+                    <a href="https://github.com/Ayush22042004" class="btn btn-secondary" target="_blank">GITHUB PORTAL</a>
+                </div>
+            </div>
+            <div class="hero-image">
+                <div class="hero-img-container">
+                    <img src="images/profile.jpg" alt="Profile Picture" id="profile-img">
+                </div>
+            </div>
+        </div>
+        <div class="scroll-indicator">
+            <a href="#about">
+                <i class="fas fa-chevron-down"></i>
+            </a>
+        </div>
+    </section>
+
+    <!-- Passions Showcase -->
+    <section class="passions">
+        <div class="container">
+            <h2 class="passions-title">⚡ SUPERNATURAL POWERS ⚡</h2>
+            <div class="passions-grid">
+                <div class="passion-card">
+                    <div class="passion-icon motorcycle">🏍️</div>
+                    <h3>SPEED FORCE</h3>
+                    <p>Xpulse 200  Rider. Moving fast through Road and code. Adventure is in my DNA.</p>
+                    <div class="passion-accent"></div>
+                </div>
+                <div class="passion-card">
+                    <div class="passion-icon f1">🏎️</div>
+                    <h3>MOTORSPORT FANATIC</h3>
+                    <p>F1 • MotoGP • Le Mans • IndyCar. Living for the thrill of racing. Speed, strategy & pure adrenaline!</p>
+                    <div class="passion-accent"></div>
+                </div>
+                <div class="passion-card">
+                    <div class="passion-icon coffee">☕</div>
+                    <h3>CAFFEINE PROTOCOL</h3>
+                    <p>Coffee keeps me alive. Espresso-driven development sessions are when magic happens.</p>
+                    <div class="passion-accent"></div>
+                </div>
+                <div class="passion-card">
+                    <div class="passion-icon cinema">🎬</div>
+                    <h3>STORYTELLER</h3>
+                    <p>Cinema & cinematography fanatic. Every project tells a story through beautiful code.</p>
+                    <div class="passion-accent"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section id="about" class="about">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">🌀 THE MIND FLAYER'S ARCHITECT 🌀</h2>
+                <p class="section-subtitle">Who I am in this Upside Down world</p>
+            </div>
+            <div class="about-content">
+                <div class="about-text">
+                    <h3>WHO I AM</h3>
+                    <p>
+                        I am Ayush Singh, a developer who builds portals between dimensions. Armed with 2+ years of development experience, I conjure web applications that defy the laws of bad code.
+                    </p>
+                    <p>
+                        Full-stack sorcerer specializing in React, Node.js, MongoDB, and cloud deployment. Currently seeking portals where I can channel my powers into real-world problems.
+                    </p>
+                    <p>
+                        I believe in writing clean spells, following sacred patterns, and continuously evolving my dark arts through challenging quests.
+                    </p>
+                    <div class="about-stats">
+                        <div class="stat">
+                            <h4>2+</h4>
+                            <p>Dimensions Explored</p>
+                        </div>
+                        <div class="stat">
+                            <h4>2nd Year</h4>
+                            <p>Btech Student</p>
+                        </div>
+                        <div class="stat">
+                            <h4>∞</h4>
+                            <p>Code Spells Cast</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="about-image">
+                    <div class="about-slideshow">
+                        <div class="slide-img-container">
+                            <img class="about-slide active" src="images/slide1.jpg" alt="Slideshow image 1">
+                            <img class="about-slide" src="images/slide2.jpg" alt="Slideshow image 2">
+                            <img class="about-slide" src="images/slide3.jpg" alt="Slideshow image 3">
+                            <img class="about-slide" src="images/slide4.jpg" alt="Slideshow image 4">
+                            <img class="about-slide" src="images/slide5.jpg" alt="Slideshow image 5">
+                            <img class="about-slide" src="images/slide6.jpg" alt="Slideshow image 6">
+                            <img class="about-slide" src="images/slide7.jpg" alt="Slideshow image 7">
+                            <img class="about-slide" src="images/slide8.jpg" alt="Slideshow image 8">
+                            <img class="about-slide" src="images/slide9.jpg" alt="Slideshow image 9">
+                            <img class="about-slide" src="images/slide10.jpg" alt="Slideshow image 10">
+                            <img class="about-slide" src="images/slide11.jpg" alt="Slideshow image 11">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section id="skills" class="skills">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">⚔️ MYSTICAL ARSENAL ⚔️</h2>
+                <p class="section-subtitle">Weapons of supernatural power</p>
+            </div>
+            <div class="skills-grid">
+                <div class="skill-category">
+                    <h3><i class="fas fa-code"></i> Frontend</h3>
+                    <div class="skill-items">
+                        <div class="skill-item">
+                            <i class="fab fa-html5"></i>
+                            <span>HTML5</span>
+                        </div>
+                        <div class="skill-item">
+                            <i class="fab fa-css3-alt"></i>
+                            <span>CSS3</span>
+                        </div>
+                        <div class="skill-item">
+                            <i class="fab fa-js-square"></i>
+                            <span>JavaScript</span>
+                        </div>
+                        <div class="skill-item">
+                            <i class="fab fa-react"></i>
+                            <span>React</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="skill-category">
+                    <h3><i class="fas fa-server"></i> Backend</h3>
+                    <div class="skill-items">
+                        <div class="skill-item">
+                            <i class="fab fa-node-js"></i>
+                            <span>Node.js</span>
+                        </div>
+                        <div class="skill-item">
+                            <i class="fab fa-python"></i>
+                            <span>Python</span>
+                        </div>
+                        <div class="skill-item">
+                            <i class="fab fa-java"></i>
+                            <span>Java</span>
+                        </div>
+                        <div class="skill-item">
+                            <i class="fas fa-copyright"></i>
+                            <span>C</span>
+                        </div>
+                        <div class="skill-item">
+                            <i class="fas fa-database"></i>
+                            <span>MongoDB</span>
+                        </div>
+                        <div class="skill-item">
+                            <i class="fas fa-cube"></i>
+                            <span>Express.js</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="skill-category">
+                    <h3><i class="fas fa-tools"></i> Tools & Other</h3>
+                    <div class="skill-items">
+                        <div class="skill-item">
+                            <i class="fab fa-git-alt"></i>
+                            <span>Git</span>
+                        </div>
+                        <div class="skill-item">
+                            <i class="fab fa-github"></i>
+                            <span>GitHub</span>
+                        </div>
+                        <div class="skill-item">
+                            <i class="fas fa-terminal"></i>
+                            <span>VS Code</span>
+                        </div>
+                        <div class="skill-item">
+                            <i class="fas fa-leaf"></i>
+                            <span>RESTful APIs</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects" class="projects">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">🔮 INTERDIMENSIONAL CREATIONS 🔮</h2>
+                <p class="section-subtitle">Portals I've constructed across the Upside Down</p>
+            </div>
+            <div class="projects-grid">
+                <div class="project-card">
+                    <div class="project-image">
+                        <img src="images/project1.jpg" alt="Project 1">
+                        <div class="project-overlay">
+                            <div class="project-links">
+                                <a href="https://greatwarrior22.pythonanywhere.com/" class="project-link" target="_blank"><i class="fas fa-external-link-alt"></i></a>
+                                <a href="https://github.com/Ayush22042004/ClickVote" class="project-link" target="_blank"><i class="fab fa-github"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="project-info">
+                        <h3>ClickVote-voting service</h3>
+                        <p>A secure voting service platform built with Python and Flask </p>
+                        <div class="project-tech">
+                            <span>Python</span>
+                            <span>Flask</span>
+                            <span>SQLite3</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="project-card">
+                    <div class="project-image">
+                        <img src="images/project2.jpg" alt="Project 2">
+                        <div class="project-overlay">
+                            <div class="project-links">
+                                <a href="https://nextask0.netlify.app/" class="project-link" target="_blank"><i class="fas fa-external-link-alt"></i></a>
+                                <a href="https://github.com/Ayush22042004/Nextask" class="project-link" target="_blank"><i class="fab fa-github"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="project-info">
+                        <h3>Nextask-Task Management App</h3>
+                        <p>A collaborative task management application with real-time updates</p>
+                        <div class="project-tech">
+                            <span>Vue.js</span>
+                            <span>Firebase</span>
+                            <span>CSS3</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="project-card">
+                    <div class="project-image">
+                        <img src="images/project3.jpg" alt="Project 3">
+                        <div class="project-overlay">
+                            <div class="project-links">
+                                <a href="https://skypulse2.netlify.app/" class="project-link" target="_blank"><i class="fas fa-external-link-alt"></i></a>
+                                <a href="https://github.com/Ayush22042004/Weather-Dashboard" class="project-link" target="_blank"><i class="fab fa-github"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="project-info">
+                        <h3>Skypulse-Weather Dashboard</h3>
+                        <p>A responsive weather application with location-based forecasts</p>
+                        <div class="project-tech">
+                            <span>JavaScript</span>
+                            <span>API Integration</span>
+                            <span>Chart.js</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">📡 OPEN A PORTAL 📡</h2>
+                <p class="section-subtitle"><b>Contact me. Let's create the extraordinary</b></p>
+            </div>
+            <div class="contact-content">
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <i class="fas fa-envelope"></i>
+                        <div>
+                            <h4>Email</h4>
+                            <a href="mailto:ayushssingh2005@gmail.com">ayushssingh2005@gmail.com</a>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-phone"></i>
+                        <div>
+                            <h4>Phone</h4>
+                            <a href="tel:+917700029150">+91 7700029150</a>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <div>
+                            <h4>Location</h4>
+                            <p>Navi Mumbai, India</p>
+                        </div>
+                    </div>
+                    <div class="social-links">
+                        <a href="https://www.linkedin.com/public-profile/settings?trk=d_flagship3_profile_self_view_public_profile" class="social-link" target="_blank"><i class="fab fa-linkedin"></i></a>
+                        <a href="https://github.com/Ayush22042004" class="social-link" target="_blank"><i class="fab fa-github"></i></a>
+                        <a href="https://x.com/AyushSingh48642" class="social-link" target="_blank"><i class="fab fa-twitter"></i></a>
+                        <a href="https://instagram.com/_ayush_singh_2204" class="social-link" target="_blank"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+                <form class="contact-form" id="contact-form" action="https://api.web3forms.com/submit" method="POST">
+                    <input type="hidden" name="access_key" value="4b545cf9-6789-4685-a975-bc871682c864">
+                    <div class="form-group">
+                        <input type="text" name="name" placeholder="Your Name" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" name="email" placeholder="Your Email" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" name="subject" placeholder="Subject" required>
+                    </div>
+                    <div class="form-group">
+                        <textarea name="message" placeholder="Your Message" rows="5" required></textarea>
+                    </div>
+                    <!-- Redirect after submission -->
+                    <input type="hidden" name="redirect" value="https://web3forms.com/success">
+                    <button type="submit" class="btn btn-primary">Send Message</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>AYUSH SINGH</h4>
+                    <p>Developer of Impossible Things | Master of Code & Coffee</p>
+                </div>
+                <div class="footer-section">
+                    <h4>PORTAL LINKS</h4>
+                    <ul>
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#about">About</a></li>
+                        <li><a href="#projects">Projects</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>FOLLOW MY JOURNEY</h4>
+                    <div class="footer-social">
+                        <a href="https://github.com/Ayush22042004" target="_blank" title="GitHub"><i class="fab fa-github"></i></a>
+                        <a href="https://www.linkedin.com/in/ayush-singh-2204/" target="_blank" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                        <a href="https://x.com/AyushSingh48642" target="_blank" title="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="https://instagram.com/_ayush_singh_2204" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Ayush Singh. All rights reserved. | Crafted from pure code & supernatural energy</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
