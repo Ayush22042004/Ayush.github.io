@@ -1,77 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-        <style>
-            #loader-screen {
-                background: #0d0015;
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100vw;
-                height: 100vh;
-                z-index: 99999;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                flex-direction: column;
-                overflow: hidden;
-            }
-            .loader-fog {
-                position: absolute;
-                top: 0;
-                left: 0;
-                width: 100vw;
-                height: 100vh;
-                pointer-events: none;
-                background: radial-gradient(circle at 60% 40%, rgba(255,255,255,0.08) 0%, rgba(13,0,21,0.2) 100%);
-                opacity: 0.7;
-                filter: blur(8px);
-                animation: fogMove 6s infinite linear alternate;
-            }
-            @keyframes fogMove {
-                0% { transform: translateY(0px) scale(1); opacity: 0.7; }
-                50% { transform: translateY(-20px) scale(1.05); opacity: 0.8; }
-                100% { transform: translateY(0px) scale(1); opacity: 0.7; }
-            }
-            .loader-flicker-text {
-                font-size: 2.2rem;
-                font-weight: 700;
-                color: #d32f2f;
-                letter-spacing: 2px;
-                text-shadow: 0 0 30px #d32f2f, 0 0 60px #d32f2f;
-                animation: loaderFlickerText 3.5s infinite ease-in-out;
-            }
-            @keyframes loaderFlickerText {
-                0%, 100% { opacity: 1; text-shadow: 0 0 30px #d32f2f, 0 0 60px #d32f2f; }
-                20% { opacity: 0.92; text-shadow: 0 0 20px #d32f2f, 0 0 40px #d32f2f; }
-                40% { opacity: 0.85; text-shadow: 0 0 10px #d32f2f, 0 0 20px #d32f2f; }
-                60% { opacity: 0.95; text-shadow: 0 0 40px #d32f2f, 0 0 80px #d32f2f; }
-                80% { opacity: 0.98; text-shadow: 0 0 30px #d32f2f, 0 0 60px #d32f2f; }
-            }
-            .about-slide {
-                transition: opacity 0.7s ease-in-out;
-                opacity: 0;
-                position: absolute;
-                left: 0;
-                top: 0;
-                width: 100%;
-                height: 100%;
-                object-fit: cover;
-            }
-            .about-slide.active {
-                opacity: 1;
-                z-index: 2;
-            }
-        </style>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Welcome to the Upside Down. Ayush Singh - Developer of Impossible Things">
     <meta name="keywords" content="Stranger Things, Developer, Portfolio, Web Developer, Supernatural">
     <meta name="author" content="Ayush Singh">
     <title>AYUSH SINGH - THE UPSIDE DOWN DEVELOPER</title>
+    <!-- preconnect & preload for fonts (reduce render-blocking) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap">
+
     <link rel="stylesheet" href="styles.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- preload hero image for faster LCP -->
+    <link rel="preload" as="image" href="images/profile.jpg">
 </head>
 <body>
         <!-- Loader Screen -->
@@ -79,8 +25,8 @@
             <div class="loader-fog"></div>
             <div class="loader-flicker-text">Entering the Upside Down…</div>
         </div>
-    <!-- Background music element (start muted to satisfy autoplay policies) -->
-    <audio id="bg-music" src="audio/bg-music.mp3" loop autoplay muted preload="auto"></audio>
+    <!-- Background music element (load on demand to avoid blocking) -->
+    <audio id="bg-music" src="audio/bg-music.mp3" loop muted preload="none"></audio>
 
     <!-- Stranger Things Animated Background Elements -->
     <div class="flicker-overlay"></div>
@@ -180,7 +126,8 @@
             </div>
             <div class="hero-image">
                 <div class="hero-img-container">
-                    <img src="images/profile.jpg" alt="Profile Picture" id="profile-img">
+                    <!-- main profile image is critical, load eagerly and consider preloading -->
+    <img src="images/profile.jpg" alt="Profile Picture" id="profile-img" loading="eager">
                 </div>
             </div>
         </div>
@@ -259,17 +206,18 @@
                 <div class="about-image">
                     <div class="about-slideshow">
                         <div class="slide-img-container">
-                            <img class="about-slide active" src="images/slide1.jpg" alt="Slideshow image 1">
-                            <img class="about-slide" src="images/slide2.jpg" alt="Slideshow image 2">
-                            <img class="about-slide" src="images/slide3.jpg" alt="Slideshow image 3">
-                            <img class="about-slide" src="images/slide4.jpg" alt="Slideshow image 4">
-                            <img class="about-slide" src="images/slide5.jpg" alt="Slideshow image 5">
-                            <img class="about-slide" src="images/slide6.jpg" alt="Slideshow image 6">
-                            <img class="about-slide" src="images/slide7.jpg" alt="Slideshow image 7">
-                            <img class="about-slide" src="images/slide8.jpg" alt="Slideshow image 8">
-                            <img class="about-slide" src="images/slide9.jpg" alt="Slideshow image 9">
-                            <img class="about-slide" src="images/slide10.jpg" alt="Slideshow image 10">
-                            <img class="about-slide" src="images/slide11.jpg" alt="Slideshow image 11">
+                            <!-- slideshow images are non‑critical, lazy–load to improve LCP -->
+                            <img class="about-slide active" src="images/slide1.jpg" alt="Slideshow image 1" loading="lazy">
+                            <img class="about-slide" src="images/slide2.jpg" alt="Slideshow image 2" loading="lazy">
+                            <img class="about-slide" src="images/slide3.jpg" alt="Slideshow image 3" loading="lazy">
+                            <img class="about-slide" src="images/slide4.jpg" alt="Slideshow image 4" loading="lazy">
+                            <img class="about-slide" src="images/slide5.jpg" alt="Slideshow image 5" loading="lazy">
+                            <img class="about-slide" src="images/slide6.jpg" alt="Slideshow image 6" loading="lazy">
+                            <img class="about-slide" src="images/slide7.jpg" alt="Slideshow image 7" loading="lazy">
+                            <img class="about-slide" src="images/slide8.jpg" alt="Slideshow image 8" loading="lazy">
+                            <img class="about-slide" src="images/slide9.jpg" alt="Slideshow image 9" loading="lazy">
+                            <img class="about-slide" src="images/slide10.jpg" alt="Slideshow image 10" loading="lazy">
+                            <img class="about-slide" src="images/slide11.jpg" alt="Slideshow image 11" loading="lazy">
                         </div>
                     </div>
                 </div>
@@ -370,7 +318,7 @@
             <div class="projects-grid">
                 <div class="project-card">
                     <div class="project-image">
-                        <img src="images/project1.jpg" alt="Project 1">
+                        <img src="images/project1.jpg" alt="Project 1" loading="lazy">
                         <div class="project-overlay">
                             <div class="project-links">
                                 <a href="https://greatwarrior22.pythonanywhere.com/" class="project-link" target="_blank"><i class="fas fa-external-link-alt"></i></a>
@@ -390,7 +338,7 @@
                 </div>
                 <div class="project-card">
                     <div class="project-image">
-                        <img src="images/project2.jpg" alt="Project 2">
+                        <img src="images/project2.jpg" alt="Project 2" loading="lazy">
                         <div class="project-overlay">
                             <div class="project-links">
                                 <a href="https://nextask0.netlify.app/" class="project-link" target="_blank"><i class="fas fa-external-link-alt"></i></a>
@@ -410,7 +358,7 @@
                 </div>
                 <div class="project-card">
                     <div class="project-image">
-                        <img src="images/project3.jpg" alt="Project 3">
+                        <img src="images/project3.jpg" alt="Project 3" loading="lazy">
                         <div class="project-overlay">
                             <div class="project-links">
                                 <a href="https://skypulse2.netlify.app/" class="project-link" target="_blank"><i class="fas fa-external-link-alt"></i></a>
@@ -519,11 +467,12 @@
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2025 Ayush Singh. All rights reserved. | Crafted from pure code & supernatural energy</p>
+                <p>&copy; 2026 Ayush Singh. All rights reserved. | Crafted from pure code & supernatural energy</p>
             </div>
         </div>
     </footer>
 
-    <script src="script.js"></script>
+    <!-- defer to avoid blocking render -->
+    <script src="script.js" defer></script>
 </body>
 </html>

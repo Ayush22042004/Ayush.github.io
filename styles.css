@@ -56,6 +56,68 @@ body {
     transition: all 0.4s ease;
 }
 
+/* ===== loader and slideshow styles moved from head inline block ===== */
+#loader-screen {
+    background: #0d0015;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 99999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    overflow: hidden;
+}
+.loader-fog {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+    background: radial-gradient(circle at 60% 40%, rgba(255,255,255,0.08) 0%, rgba(13,0,21,0.2) 100%);
+    opacity: 0.7;
+    filter: blur(8px);
+    animation: fogMove 6s infinite linear alternate;
+}
+@keyframes fogMove {
+    0% { transform: translateY(0px) scale(1); opacity: 0.7; }
+    50% { transform: translateY(-20px) scale(1.05); opacity: 0.8; }
+    100% { transform: translateY(0px) scale(1); opacity: 0.7; }
+}
+.loader-flicker-text {
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: #d32f2f;
+    letter-spacing: 2px;
+    text-shadow: 0 0 30px #d32f2f, 0 0 60px #d32f2f;
+    animation: loaderFlickerText 3.5s infinite ease-in-out;
+}
+@keyframes loaderFlickerText {
+    0%, 100% { opacity: 1; text-shadow: 0 0 30px #d32f2f, 0 0 60px #d32f2f; }
+    20% { opacity: 0.92; text-shadow: 0 0 20px #d32f2f, 0 0 40px #d32f2f; }
+    40% { opacity: 0.85; text-shadow: 0 0 10px #d32f2f, 0 0 20px #d32f2f; }
+    60% { opacity: 0.95; text-shadow: 0 0 40px #d32f2f, 0 0 80px #d32f2f; }
+    80% { opacity: 0.98; text-shadow: 0 0 30px #d32f2f, 0 0 60px #d32f2f; }
+}
+.about-slide {
+    transition: opacity 0.7s ease-in-out;
+    opacity: 0;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.about-slide.active {
+    opacity: 1;
+    z-index: 2;
+}
+
 /* =====================================================
    STRANGER THINGS ANIMATED BACKGROUND - UPSIDE DOWN
    ===================================================== */
@@ -2336,11 +2398,11 @@ body.real-world ::-webkit-scrollbar-thumb {
 
     .nav-menu {
         position: fixed;
-        left: -100%;
-        top: 70px;
+        left: -100vw; /* slide completely off-screen */
+        top: 70px; /* will be overridden below for very small screens */
         flex-direction: column;
         background-color: var(--card-bg);
-        width: 100%;
+        width: 100vw; /* ensure full viewport width */
         text-align: center;
         transition: left 0.3s ease-out;
         box-shadow: 0 0 30px var(--primary-color);
@@ -2353,7 +2415,18 @@ body.real-world ::-webkit-scrollbar-thumb {
 
     .nav-menu.active {
         left: 0;
+        z-index: 1100; /* sit above navbar */
     }
+
+/* ensure toggle sits above everything so it's clickable */
+.nav-toggle {
+    z-index: 1101;
+}
+
+/* mobile menu button specifically high z-index to avoid overlap */
+#mobile-menu {
+    z-index: 1102;
+}
 
     .nav-item {
         padding: 0.75rem 0;
@@ -2372,6 +2445,13 @@ body.real-world ::-webkit-scrollbar-thumb {
 
     .nav-toggle {
         display: flex;
+        width: 40px;
+        height: 40px;
+    }
+
+    .bar {
+        width: 24px;
+        height: 2px;
     }
 
     .theme-toggle {
@@ -2381,6 +2461,9 @@ body.real-world ::-webkit-scrollbar-thumb {
     .music-toggle {
         display: flex !important;
         position: relative;
+        width: 40px;
+        height: 40px;
+        font-size: 1rem;
     }
 
     .nav-toggle.active .bar:nth-child(2) {
@@ -2666,11 +2749,14 @@ body.real-world ::-webkit-scrollbar-thumb {
     .navbar {
         padding: 0.5rem 0;
         height: 60px;
+        /* overflow-x removed to allow menu to slide out */
     }
 
     .nav-container {
         padding: 0 12px;
         height: 60px;
+        /* overflow-x removed so fixed nav-menu isn't clipped */
+        box-sizing: border-box;
     }
 
     .nav-logo a {
@@ -3077,8 +3163,9 @@ svg {
     display: block;
 }
 
-@media (max-width: 500px) {
+@media (max-width: 768px) {
 
+    /* general layout adjustments */
     body {
         overflow-x: hidden;
     }
@@ -3097,15 +3184,44 @@ svg {
         margin-inline: auto;
     }
 
-    /* performance boost for weak phones */
+    /* kill heavy visuals for small screens/weak phones */
     .floating-particles,
-    .energy-lines {
-        opacity: 0.15;
+    .energy-lines,
+    .upside-down-bg,
+    .flicker-overlay {
+        display: none;
+    }
+
+    body::before,
+    body::after {
+        display: none;
     }
 
     .hero::before,
     .hero::after {
         filter: blur(40px);
+    }
+
+    /* disable most animations/transitions to save CPU and avoid glitches */
+    * {
+        animation: none !important;
+        transition: none !important;
+    }
+}
+
+/* fallback when backdrop-filter isn't supported (e.g. some Instagram webviews) */
+@supports not (backdrop-filter: blur(10px)) {
+    .navbar {
+        backdrop-filter: none;
+        background: rgba(10, 10, 10, 0.95);
+    }
+}
+
+/* respect reduced-motion user preference */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation: none !important;
+        transition: none !important;
     }
 }
 
