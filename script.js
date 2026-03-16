@@ -245,18 +245,22 @@ document.addEventListener('DOMContentLoaded', function() {
     const mobileMenu = document.getElementById('mobile-menu');
     const navMenu = document.getElementById('nav-menu');
 
-    function closeMobileMenu() {
+    function setMenuState(isOpen) {
         if (!mobileMenu || !navMenu) return;
-        mobileMenu.classList.remove('active');
-        navMenu.classList.remove('active');
-        mobileMenu.setAttribute('aria-expanded', 'false');
+        navMenu.classList.toggle('active', isOpen);
+        mobileMenu.classList.toggle('active', isOpen);
+        mobileMenu.setAttribute('aria-expanded', String(isOpen));
+        document.body.classList.toggle('menu-open', isOpen);
+    }
+
+    function closeMobileMenu() {
+        setMenuState(false);
     }
 
     if (mobileMenu && navMenu) {
         mobileMenu.addEventListener('click', function() {
-            const isExpanded = navMenu.classList.toggle('active');
-            mobileMenu.classList.toggle('active');
-            mobileMenu.setAttribute('aria-expanded', String(isExpanded));
+            const isExpanded = !navMenu.classList.contains('active');
+            setMenuState(isExpanded);
         });
     }
 
@@ -278,6 +282,13 @@ document.addEventListener('DOMContentLoaded', function() {
     // Close on Escape key for accessibility
     document.addEventListener('keydown', function(e) {
         if (e.key === 'Escape') {
+            closeMobileMenu();
+        }
+    });
+
+    // Ensure menu is closed when returning to desktop widths.
+    window.addEventListener('resize', function() {
+        if (window.innerWidth > 900) {
             closeMobileMenu();
         }
     });
@@ -314,24 +325,25 @@ document.addEventListener('DOMContentLoaded', function() {
     // LOGO TYPEWRITER - WELCOME TO THE UPSIDE DOWN
     // ============================================
     const logoTypewriter = document.querySelector('.logo-typewriter');
-    const welcomeText = 'WELCOME TO THE UPSIDE DOWN';
+    const fullWelcomeText = 'WELCOME TO THE UPSIDE DOWN';
     let logoCharIndex = 0;
+    let logoTypeTimer = null;
 
     function typeLogoEffect() {
         if (!logoTypewriter) return;
-        
-        if (logoCharIndex <= welcomeText.length) {
-            logoTypewriter.textContent = welcomeText.substring(0, logoCharIndex);
+
+        if (logoCharIndex <= fullWelcomeText.length) {
+            logoTypewriter.textContent = fullWelcomeText.substring(0, logoCharIndex);
             logoCharIndex++;
-            setTimeout(typeLogoEffect, 100);
+            logoTypeTimer = setTimeout(typeLogoEffect, 100);
         } else {
             // After complete, wait and restart with glitch effect
-            setTimeout(() => {
+            logoTypeTimer = setTimeout(() => {
                 logoTypewriter.style.animation = 'glitchText 0.3s ease';
-                setTimeout(() => {
+                logoTypeTimer = setTimeout(() => {
                     logoTypewriter.style.animation = '';
                     logoCharIndex = 0;
-                    setTimeout(typeLogoEffect, 1000);
+                    logoTypeTimer = setTimeout(typeLogoEffect, 1000);
                 }, 300);
             }, 5000);
         }
@@ -339,7 +351,18 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Start logo typewriter immediately
     if (logoTypewriter) {
-        setTimeout(typeLogoEffect, 100);
+        logoTypeTimer = setTimeout(typeLogoEffect, 100);
+
+        // Restart animation on resize to keep timing smooth.
+        window.addEventListener('resize', () => {
+            logoCharIndex = 0;
+            logoTypewriter.textContent = '';
+            if (logoTypeTimer) {
+                clearTimeout(logoTypeTimer);
+                logoTypeTimer = null;
+            }
+            logoTypeTimer = setTimeout(typeLogoEffect, 120);
+        });
     }
 
     // ============================================

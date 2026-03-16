@@ -56,6 +56,11 @@ body {
     transition: all 0.4s ease;
 }
 
+body.menu-open {
+    overflow: hidden;
+    touch-action: none;
+}
+
 /* ===== loader and slideshow styles moved from head inline block ===== */
 #loader-screen {
     background: #0d0015;
@@ -969,10 +974,11 @@ body.real-world .music-toggle:hover {
     letter-spacing: 2px;
     display: inline-block;
     width: clamp(220px, 34vw, 560px);
+    padding: 0.2rem 0.5rem;
     box-sizing: border-box;
     white-space: nowrap;
     overflow: hidden;
-    text-overflow: ellipsis;
+    text-overflow: clip;
 }
 
 .logo-typewriter::after {
@@ -1223,6 +1229,9 @@ body.real-world .music-toggle:hover {
     left: 50%;
     transform: translateX(-50%);
     z-index: 10;
+    display: none !important;
+    visibility: hidden;
+    pointer-events: none;
 }
 
 .scroll-indicator a {
@@ -2297,6 +2306,254 @@ body.real-world .nav-link.active {
     }
 }
 
+/* TABLET BREAKPOINT (1024px and below) */
+@media (max-width: 1024px) {
+    .nav-container {
+        padding: 0 20px;
+    }
+
+    .logo-typewriter {
+        width: clamp(170px, 24vw, 260px);
+    }
+
+    .hero {
+        min-height: auto;
+        padding: 96px 0 72px;
+    }
+
+    .hero-container {
+        grid-template-columns: 1fr;
+        text-align: center;
+        gap: 2.5rem;
+    }
+
+    .hero-content {
+        order: 2;
+    }
+
+    .hero-image {
+        order: 1;
+        max-width: 100%;
+    }
+
+    .hero-img-container {
+        max-width: min(440px, 90vw);
+        margin: 0 auto;
+    }
+
+    .hero-buttons {
+        justify-content: center;
+    }
+
+    .about-content,
+    .contact-content {
+        grid-template-columns: 1fr;
+        gap: 2.4rem;
+    }
+
+    .about-image {
+        display: flex;
+        justify-content: center;
+    }
+
+    .about-slideshow {
+        width: min(440px, 100%);
+        margin: 0 auto;
+    }
+
+    .skills-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .projects-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 1.5rem;
+    }
+
+    .project-card {
+        min-width: 0;
+    }
+
+    .footer-content {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+/* SMALL TABLET BREAKPOINT (900px and below) */
+@media (max-width: 900px) {
+    .nav-container {
+        padding: 0 14px;
+        gap: 0.55rem;
+        justify-content: flex-start;
+    }
+
+    .nav-logo {
+        flex: 1 1 auto;
+        min-width: 0;
+    }
+
+    .nav-actions {
+        margin-left: auto;
+        gap: 0.4rem;
+    }
+
+    .logo-typewriter {
+        width: clamp(220px, 50vw, 340px);
+        font-size: 0.7rem;
+        letter-spacing: 0.2px;
+        padding: 0.14rem 0.36rem;
+    }
+
+    .nav-toggle {
+        display: flex;
+        width: 40px;
+        height: 40px;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+    }
+
+    .bar {
+        width: 24px;
+        height: 2px;
+    }
+
+    .nav-menu {
+        position: fixed;
+        left: -100vw;
+        top: 80px;
+        flex-direction: column;
+        width: 100vw;
+        max-height: calc(100vh - 80px);
+        overflow-y: auto;
+        padding: 0.75rem 0;
+        text-align: center;
+        background: linear-gradient(180deg, rgba(10, 2, 18, 0.98), rgba(8, 1, 14, 0.98));
+        border-bottom: 2px solid var(--primary-color);
+        border-top: 1px solid rgba(211, 47, 47, 0.28);
+        box-shadow: 0 0 30px var(--primary-color);
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+        transform: translateY(-10px);
+        transition: left 0.3s ease-out, opacity 0.25s ease, transform 0.25s ease, visibility 0s linear 0.25s;
+        z-index: 999;
+        backdrop-filter: blur(12px);
+    }
+
+    .nav-menu.active {
+        left: 0;
+        z-index: 1100;
+        opacity: 1;
+        visibility: visible;
+        pointer-events: auto;
+        transform: translateY(0);
+        transition: left 0.3s ease-out, opacity 0.25s ease, transform 0.25s ease;
+    }
+
+    .nav-item {
+        padding: 0;
+        border-bottom: 1px solid rgba(211, 47, 47, 0.12);
+    }
+
+    .nav-item:last-child {
+        border-bottom: none;
+    }
+
+    .nav-link {
+        display: block;
+        padding: 0.9rem 1.2rem;
+        font-size: 1rem;
+        font-weight: 600;
+        letter-spacing: 0.2px;
+    }
+
+    .nav-link::after {
+        display: none;
+    }
+
+    .nav-toggle.active .bar:nth-child(2) {
+        opacity: 0;
+    }
+
+    .nav-toggle.active .bar:nth-child(1) {
+        transform: translateY(7px) rotate(45deg);
+    }
+
+    .nav-toggle.active .bar:nth-child(3) {
+        transform: translateY(-7px) rotate(-45deg);
+    }
+
+    .projects-grid,
+    .footer-content {
+        grid-template-columns: 1fr;
+    }
+
+    .about-stats {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* SMALL PHONES / COMPACT DEVICES */
+@media (max-width: 600px) {
+    .nav-container {
+        padding: 0 10px;
+    }
+
+    .logo-typewriter {
+        width: clamp(130px, 42vw, 180px);
+        font-size: 0.62rem;
+        letter-spacing: 0;
+        padding: 0.12rem 0.3rem;
+    }
+
+    .hero {
+        padding-top: 72px !important;
+        padding-bottom: 28px !important;
+    }
+
+    .hero-buttons {
+        width: 100%;
+        gap: 0.55rem;
+    }
+
+    .btn {
+        width: 100%;
+        max-width: 100%;
+        font-size: 0.78rem;
+        padding: 10px 12px;
+        letter-spacing: 0;
+    }
+
+    .hero-description {
+        margin-bottom: 0.9rem;
+    }
+}
+
+/* ULTRA SMALL WIDTHS */
+@media (max-width: 360px) {
+    .logo-typewriter {
+        display: none;
+    }
+
+    .nav-logo a {
+        gap: 0.3rem;
+    }
+
+    .hero-title {
+        font-size: 1.18rem;
+    }
+
+    .hero-subtitle {
+        font-size: 0.78rem;
+    }
+
+    .btn {
+        font-size: 0.74rem;
+        padding: 9px 10px;
+    }
+}
+
 body.real-world .hero {
     background: linear-gradient(135deg, #f8fafc 0%, #e0f2fe 50%, #f8fafc 100%);
 }
@@ -2483,10 +2740,11 @@ body.real-world ::-webkit-scrollbar-thumb {
 
     .logo-typewriter {
         display: inline-block;
-        width: 160px;
-        font-size: 0.58rem;
-        letter-spacing: 0.3px;
-        text-overflow: ellipsis;
+        width: clamp(180px, 48vw, 300px);
+        padding: 0.16rem 0.45rem;
+        font-size: 0.68rem;
+        letter-spacing: 0.15px;
+        text-overflow: clip;
         overflow: hidden;
         white-space: nowrap;
         line-height: 1;
@@ -2507,14 +2765,19 @@ body.real-world ::-webkit-scrollbar-thumb {
         left: -100vw; /* slide completely off-screen */
         top: 70px; /* will be overridden below for very small screens */
         flex-direction: column;
-        background-color: var(--card-bg);
+        background: linear-gradient(180deg, rgba(10, 2, 18, 0.99), rgba(8, 1, 14, 0.99));
         width: 100vw; /* ensure full viewport width */
         text-align: center;
-        transition: left 0.3s ease-out;
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+        transform: translateY(-8px);
+        transition: left 0.3s ease-out, opacity 0.25s ease, transform 0.25s ease, visibility 0s linear 0.25s;
         box-shadow: 0 0 30px var(--primary-color);
-        padding: 1.5rem 0;
+        padding: 0.6rem 0;
         z-index: 999;
         border-bottom: 2px solid var(--primary-color);
+        border-top: 1px solid rgba(211, 47, 47, 0.3);
         max-height: calc(100vh - 70px);
         overflow-y: auto;
         backdrop-filter: blur(12px);
@@ -2523,6 +2786,11 @@ body.real-world ::-webkit-scrollbar-thumb {
     .nav-menu.active {
         left: 0;
         z-index: 1100; /* sit above navbar */
+        opacity: 1;
+        visibility: visible;
+        pointer-events: auto;
+        transform: translateY(0);
+        transition: left 0.3s ease-out, opacity 0.25s ease, transform 0.25s ease;
     }
 
 /* ensure toggle sits above everything so it's clickable */
@@ -2536,8 +2804,8 @@ body.real-world ::-webkit-scrollbar-thumb {
 }
 
     .nav-item {
-        padding: 0.75rem 0;
-        border-bottom: 1px solid rgba(211, 47, 47, 0.1);
+        padding: 0;
+        border-bottom: 1px solid rgba(211, 47, 47, 0.14);
     }
 
     .nav-item:last-child {
@@ -2546,8 +2814,10 @@ body.real-world ::-webkit-scrollbar-thumb {
 
     .nav-link {
         display: block;
-        padding: 1rem 1.5rem;
-        font-size: 1.1rem;
+        padding: 0.9rem 1rem;
+        font-size: 1rem;
+        font-weight: 600;
+        line-height: 1.3;
     }
 
     .nav-toggle {
@@ -2611,6 +2881,10 @@ body.real-world ::-webkit-scrollbar-thumb {
 
     .hero-image {
         order: 1;
+        display: flex;
+        justify-content: center;
+        padding-inline: 12px;
+        margin-bottom: 0.4rem;
     }
 
     .hero-title {
@@ -2650,13 +2924,15 @@ body.real-world ::-webkit-scrollbar-thumb {
     }
 
     .hero-img-container {
-        width: 240px;
-        height: 240px;
-        margin: 0 auto;
+        width: min(320px, 88vw);
+        height: auto;
+        aspect-ratio: 4 / 3;
+        margin: 0 auto 0.5rem;
+        border-radius: 12px;
     }
 
     .scroll-indicator {
-        display: block;
+        display: none !important;
     }
 
     /* ===== PASSIONS SECTION ===== */
@@ -2876,7 +3152,7 @@ body.real-world ::-webkit-scrollbar-thumb {
 
     .nav-actions {
         margin-left: auto;
-        gap: 0.35rem;
+        gap: 0.25rem;
     }
 
     .nav-logo a {
@@ -2889,10 +3165,11 @@ body.real-world ::-webkit-scrollbar-thumb {
 
     .logo-typewriter {
         display: inline-block;
-        width: 128px;
-        font-size: 0.72rem;
-        letter-spacing: 0.2px;
-        text-overflow: ellipsis;
+        width: clamp(160px, 52vw, 220px);
+        padding: 0.14rem 0.38rem;
+        font-size: 0.7rem;
+        letter-spacing: 0;
+        text-overflow: clip;
         overflow: hidden;
         white-space: nowrap;
         line-height: 1;
@@ -2903,14 +3180,34 @@ body.real-world ::-webkit-scrollbar-thumb {
     }
 
     .logo-icon {
-        width: 32px;
-        height: 32px;
-        font-size: 0.85rem;
+        width: 30px;
+        height: 30px;
+        font-size: 0.8rem;
+    }
+
+    .nav-toggle,
+    .music-toggle {
+        width: 34px;
+        height: 34px;
+    }
+
+    .music-toggle {
+        font-size: 0.9rem;
+    }
+
+    .bar {
+        width: 20px;
     }
 
     .nav-menu {
         top: 60px;
-        padding: 1rem 0;
+        padding: 0.4rem 0;
+        max-height: calc(100vh - 60px);
+    }
+
+    .nav-link {
+        padding: 0.82rem 0.9rem;
+        font-size: 0.95rem;
     }
 
     /* ===== HERO SECTION ===== */
@@ -2934,6 +3231,10 @@ body.real-world ::-webkit-scrollbar-thumb {
 
     .hero-image {
         order: 1;
+        display: flex;
+        justify-content: center;
+        padding-inline: 10px;
+        margin-bottom: 0.35rem;
     }
 
     .hero-title {
@@ -2980,14 +3281,17 @@ body.real-world ::-webkit-scrollbar-thumb {
     }
 
     .hero-img-container {
-        width: 150px;
-        height: 150px;
-        margin: 0 auto 0.5rem;
-        border-radius: 8px;
+        width: min(330px, calc(100% - 20px));
+        max-width: 330px;
+        height: auto;
+        aspect-ratio: 4 / 3;
+        margin: 0 auto 0.75rem;
+        border-radius: 10px;
     }
 
     .scroll-indicator {
-        margin-top: 1rem;
+        display: none !important;
+        margin-top: 0;
     }
 
     /* ===== PASSIONS SECTION ===== */
@@ -3285,8 +3589,8 @@ body.real-world ::-webkit-scrollbar-thumb {
     }
 }
 
-    code {
-        word-break: break-all;
+code {
+    word-break: break-all;
 }
 /* ========================================
    ULTRA RESPONSIVE FINAL GUARD
@@ -3315,11 +3619,18 @@ svg {
     }
 
     .hero-image,
-    .about-slideshow,
-    .hero-img-container {
+    .about-slideshow {
         width: 100% !important;
         max-width: 100% !important;
         margin-inline: auto;
+    }
+
+    .hero-img-container {
+        width: min(330px, calc(100% - 24px)) !important;
+        max-width: 330px !important;
+        height: auto !important;
+        aspect-ratio: 4 / 3;
+        margin: 0.4rem auto 0.9rem;
     }
 
     /* kill heavy visuals for small screens/weak phones */
