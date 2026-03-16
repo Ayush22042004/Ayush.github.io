@@ -2346,7 +2346,9 @@ body.real-world .nav-link.active {
     }
 
     .logo-typewriter {
-        width: clamp(170px, 24vw, 260px);
+        width: clamp(220px, 28vw, 310px);
+        font-size: 0.899rem;
+        letter-spacing: 0.5px;
     }
 
     .hero {
@@ -2577,7 +2579,7 @@ body.real-world .nav-link.active {
 /* ULTRA SMALL WIDTHS */
 @media (max-width: 360px) {
     .logo-typewriter {
-        display: none;
+        display: none !important;
     }
 
     .nav-logo a {
@@ -3862,6 +3864,25 @@ svg {
     .navbar {
         backdrop-filter: none;
         background: rgba(10, 10, 10, 0.92);
+    }
+}
+
+/* Final micro-phone override: show compact logo text again on 360px devices. */
+@media (max-width: 360px) {
+    .nav-logo a {
+        gap: 0.22rem !important;
+    }
+
+    .logo-typewriter {
+        display: inline-block !important;
+        width: clamp(124px, 42vw, 152px) !important;
+        padding: 0.16rem 0.4rem !important;
+        font-size: 0.5rem !important;
+        letter-spacing: 0 !important;
+        line-height: 1 !important;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: clip;
     }
 }
 
